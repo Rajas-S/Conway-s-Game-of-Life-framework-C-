@@ -12,7 +12,7 @@
 #include <ctime>
 #include <thread>
 //PARAMETERS
-const int sidesize = 25;//gridsize
+const int sidesize = 100;//gridsize
 const int randomtemperature = 60;//randomseeding temperatire
 const int framerate=1;
 const std::string defaulttile = "..", alivetile = "[]";//tilings - render art
