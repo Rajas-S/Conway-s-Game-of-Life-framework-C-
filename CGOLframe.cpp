@@ -7,15 +7,14 @@
 // learn more at:
 // https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 //--------------------------------------------------
-
 #include <iostream>
 #include <ctime>
 #include <thread>
 //PARAMETERS
-const int sidesize = 100;//gridsize
-const int randomtemperature = 60;//randomseeding temperatire
-const int framerate=1;
-const std::string defaulttile = "..", alivetile = "[]";//tilings - render art
+const int sidesize = 450;//gridsize
+const int randomtemperature = 75;//randomseeding temperatire
+const int framerate=2400000;//framespersecond
+const std::string defaulttile = "``", alivetile = "LL";//tilings - render art
 
 std::string worldtile = "";
 std::string bufferline="";
@@ -33,6 +32,7 @@ void _init_() {
 		}
 	}
 	for (i = 0; i < wallx; i++) { bufferline += "  "; }
+	bufferline += '\n';
 }
 //custom starting seed
 void custom() {
@@ -53,20 +53,17 @@ int formatindex(int index) {
 void update() {
 	for (j = 0; j < wallx;j++) {
 		for (i = 0; i < wallx; i++) {
-			switch (grid[formatindex(i-1)][j] + grid[formatindex(i + 1)][j]
-				+ grid[i][formatindex(j-1)] + grid[i][formatindex(j + 1)]
+			switch (grid[formatindex(i-1)][j]
+				+ grid[formatindex(i + 1)][j]
+				+ grid[i][formatindex(j-1)]
+				+ grid[i][formatindex(j + 1)]
 				+ grid[formatindex(i - 1)][formatindex(j-1)]
-				+ grid[formatindex(i + 1)][formatindex(j - 1)] + grid[formatindex(i + 1)][formatindex(j + 1)]
+				+ grid[formatindex(i + 1)][formatindex(j - 1)]
+				+ grid[formatindex(i + 1)][formatindex(j + 1)]
 				+ grid[formatindex(i - 1)][formatindex(j + 1)]) {
-			case 0:gridhold[i][j] = 0; break;
-			case 1:gridhold[i][j] = 0; break;
 			case 2:gridhold[i][j] = grid[i][j]; break;
 			case 3:gridhold[i][j] = 1; break;
-			case 4:gridhold[i][j] = 0;break;
-			case 5:gridhold[i][j] = 0;break;
-			case 6:gridhold[i][j] = 0;break;
-			case 7:gridhold[i][j] = 0;break;
-			case 8:gridhold[i][j] = 0;break;
+			default: gridhold[i][j] = 0; break;
 			}
 		}
 	}
@@ -87,6 +84,8 @@ void render() {
 		}
 		worldtile += '\n';
 	}
+	worldtile += bufferline;//add gaps between frames
+	std::cout << "\033[2J\033[1;1H";
 	std::cout << worldtile;
 	worldtile = "";
 }
@@ -96,11 +95,10 @@ void render() {
 //-----------------------------------------------
 int main() {
 	_init_();
+	//custom();
 	while (true) {
 		update();
 		render();
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000/framerate));
-		std::cout << bufferline<<'\n';
-		std::cout << bufferline << '\n';
+		std::this_thread::sleep_for(std::chrono::microseconds(1000000 / framerate));
 	}
 }
