@@ -46,9 +46,14 @@ def formatIndex(inp,end):#add wraparound
 def update(): #update cells according to traditional CGOL rules
     for i in range(wally):
         for j in range(wallx):
-            match (grid[formatIndex(j-1,wallx)][formatIndex(i-1,wally)]+grid[j][formatIndex(i-1,wally)]+grid[formatIndex(j+1,wallx)][formatIndex(i-1,wally)]
-                    +grid[formatIndex(j-1,wallx)][i]+grid[formatIndex(j+1,wallx)][i]
-                    +grid[formatIndex(j-1,wallx)][formatIndex(i+1,wally)]+grid[j][formatIndex(i+1,wally)]+grid[formatIndex(j+1,wallx)][formatIndex(i+1,wally)]):
+            match (grid[formatIndex(j-1,wallx)][formatIndex(i-1,wally)]
+                   +grid[j][formatIndex(i-1,wally)]
+                   +grid[formatIndex(j+1,wallx)][formatIndex(i-1,wally)]
+                    +grid[formatIndex(j-1,wallx)][i]+
+                   grid[formatIndex(j+1,wallx)][i]
+                    +grid[formatIndex(j-1,wallx)][formatIndex(i+1,wally)]
+                   +grid[j][formatIndex(i+1,wally)]+
+                   grid[formatIndex(j+1,wallx)][formatIndex(i+1,wally)]):
                 case 2: gridhold[j][i]=grid[j][i]
                 case 3: gridhold[j][i]=1
                 case _: gridhold[j][i]=0
